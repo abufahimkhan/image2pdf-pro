@@ -9,7 +9,7 @@ import SuccessDialog from './components/SuccessDialog';
 import RecentFiles from './components/RecentFiles';
 import AboutDialog from './components/AboutDialog';
 import ConversionOverlay from './components/ConversionOverlay';
-import { FileUp, Sparkles, LayoutGrid, Sliders, Layers, Laptop } from 'lucide-react';
+import { Sparkles, LayoutGrid, Sliders, Layers } from 'lucide-react';
 
 export default function App() {
   const {
@@ -161,16 +161,16 @@ export default function App() {
       />
 
       {/* 2. Primary Workspace Body */}
-      <main className="flex-1 flex flex-col p-4 md:p-6 max-w-7xl w-full mx-auto overflow-hidden">
+      <main className="flex-1 flex flex-col p-3 sm:p-4 md:p-6 max-w-7xl w-full mx-auto overflow-visible lg:overflow-hidden">
         {images.length === 0 ? (
           /* Landing Stage - Zero Uploaded files */
-          <div className="flex-1 flex flex-col justify-center max-w-3xl w-full mx-auto py-10 animate-fade-in select-none">
+          <div className="flex-1 flex flex-col justify-center max-w-3xl w-full mx-auto py-6 sm:py-10 animate-fade-in select-none">
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-[#18181b] text-indigo-650 dark:text-[#a1a1aa] border border-indigo-100/50 dark:border-[#27272a] text-xs font-semibold mb-3">
                 <Sparkles className="w-3.5 h-3.5 text-[#3b82f6]" />
                 <span>Professional desktop PDF converter</span>
               </div>
-              <h1 className="text-3xl font-extrabold text-slate-900 dark:text-[#fafafa] tracking-tight sm:text-4xl">
+              <h1 className="text-2xl font-extrabold text-slate-900 dark:text-[#fafafa] tracking-tight sm:text-4xl">
                 Convert Images to Polished PDFs
               </h1>
               <p className="text-sm text-slate-500 dark:text-[#a1a1aa] mt-2.5 max-w-lg mx-auto leading-relaxed">
@@ -222,7 +222,7 @@ export default function App() {
           </div>
         ) : (
           /* Active Stage - Drag Workspace layout dashboard with grid list & Settings control bar */
-          <div className="flex-1 flex flex-col lg:flex-row gap-6 overflow-hidden min-h-0 animate-fade-in select-none">
+          <div className="flex-1 flex flex-col lg:flex-row gap-4 md:gap-6 overflow-visible lg:overflow-hidden min-h-0 animate-fade-in select-none">
 
             {/* Left/Center primary Grid Assembly area */}
             <div className="flex-1 flex flex-col min-w-0">

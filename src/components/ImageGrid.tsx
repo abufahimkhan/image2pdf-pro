@@ -1,5 +1,5 @@
 import { useState, useEffect, KeyboardEvent, MouseEvent } from 'react';
-import { Trash2, GripHorizontal, ArrowLeftRight, Check, Sparkles, FolderUp, RefreshCw, Layers } from 'lucide-react';
+import { Trash2, GripHorizontal, Check, Layers, ChevronUp, ChevronDown } from 'lucide-react';
 import { usePDFStore } from '../store';
 import { ImageFile } from '../types';
 
@@ -16,6 +16,7 @@ export default function ImageGrid() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [focusId, setFocusId] = useState<string | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const isTouchDevice = globalThis.matchMedia('(pointer: coarse)').matches;
 
   // Update focusId if previous focus target is removed
   useEffect(() => {
@@ -149,7 +150,7 @@ export default function ImageGrid() {
   const totalSize = images.reduce((acc, img) => acc + img.size, 0);
 
   return (
-    <div 
+    <div
       className="flex flex-col h-full bg-white dark:bg-[#09090b]/50 border border-slate-200/80 dark:border-[#27272a] rounded-2xl p-5 shadow-sm"
       onKeyDown={handleKeyDown}
       onClick={clearSelection}
@@ -210,20 +211,17 @@ export default function ImageGrid() {
             return (
               <div
                 key={img.id}
-                draggable
+                draggable={!isTouchDevice}
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e, index)}
                 onDragEnd={handleDragEnd}
                 onClick={(e) => handleItemClick(e, img.id, index)}
-                className={`relative group h-[190px] border rounded-xl overflow-hidden transition-all duration-200 select-none cursor-pointer flex flex-col justify-between ${
-                  isDragging ? 'opacity-30 border-blue-500 scale-95 shadow-lg' : ''
-                } ${
-                  isSelected
+                className={`relative group h-[190px] border rounded-xl overflow-hidden transition-all duration-200 select-none cursor-pointer flex flex-col justify-between ${isDragging ? 'opacity-30 border-blue-500 scale-95 shadow-lg' : ''
+                  } ${isSelected
                     ? 'border-[#3b82f6] ring-2 ring-blue-500/15 dark:ring-[#3b82f6]/30 shadow-md bg-blue-50/10 dark:bg-[#1e293b]/50'
                     : 'border-slate-200 dark:border-[#27272a] bg-slate-50/40 dark:bg-[#18181b]/30 hover:border-slate-350 dark:hover:border-[#3f3f46] hover:shadow-sm hover:dark:bg-[#18181b]'
-                } ${
-                  isFocused ? 'ring-2 ring-blue-500/40 dark:ring-[#3b82f6]/50 border-blue-500 dark:border-[#3b82f6]' : ''
-                }`}
+                  } ${isFocused ? 'ring-2 ring-blue-500/40 dark:ring-[#3b82f6]/50 border-blue-500 dark:border-[#3b82f6]' : ''
+                  }`}
               >
                 {/* Image Wrap */}
                 <div className="relative flex-1 bg-slate-100 dark:bg-[#09090b] overflow-hidden flex items-center justify-center p-2 border-b border-slate-100 dark:border-[#27272a]">
@@ -237,24 +235,23 @@ export default function ImageGrid() {
 
                   {/* Batch Selector Badge */}
                   <div
-                    className={`absolute top-2 left-2 w-5 h-5 rounded-md border text-[10px] flex items-center justify-center font-extrabold transition-all ${
-                      isSelected
+                    className={`absolute top-2 left-2 w-5 h-5 rounded-md border text-[10px] flex items-center justify-center font-extrabold transition-all ${isSelected
                         ? 'bg-[#3b82f6] text-white border-[#3b82f6] shadow-sm'
                         : 'bg-white/80 dark:bg-[#18181b]/80 text-slate-500 dark:text-[#a1a1aa] border-slate-300 dark:border-[#27272a] opacity-0 group-hover:opacity-100'
-                    }`}
+                      }`}
                   >
                     {isSelected ? <Check className="w-3 h-3 stroke-[3]" /> : index + 1}
                   </div>
 
                   {/* Drag Handle Overlay */}
-                  <div className="absolute top-2 right-2 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div 
+                  <div className={`absolute top-2 right-2 flex items-center gap-1 transition-opacity ${isTouchDevice ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                    <div
                       className="p-1 px-1.5 bg-white/90 dark:bg-[#18181b]/90 hover:bg-white dark:hover:bg-[#27272a] text-slate-600 dark:text-[#a1a1aa] rounded-md shadow-sm border border-slate-200/80 dark:border-[#27272a] cursor-grab active:cursor-grabbing"
                       title="Drag to Sort"
                     >
                       <GripHorizontal className="w-3.5 h-3.5" />
                     </div>
-                    
+
                     <button
                       type="button"
                       onClick={(e) => {
@@ -282,6 +279,33 @@ export default function ImageGrid() {
                   <div className="flex items-center justify-between mt-1 select-none font-mono text-[10px] text-slate-500 dark:text-[#71717a]">
                     <span>{img.resolution}</span>
                     <span>{formatBytes(img.size)}</span>
+                  </div>
+
+                  <div className="mt-2 flex items-center gap-1 sm:hidden">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        moveImage(img.id, 'up');
+                      }}
+                      disabled={index === 0}
+                      className="flex-1 inline-flex items-center justify-center gap-1 rounded-md border border-slate-200 dark:border-[#27272a] bg-slate-50 dark:bg-[#121214] py-1 text-[10px] font-medium text-slate-600 dark:text-[#a1a1aa] disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      <ChevronUp className="w-3 h-3" />
+                      Up
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        moveImage(img.id, 'down');
+                      }}
+                      disabled={index === images.length - 1}
+                      className="flex-1 inline-flex items-center justify-center gap-1 rounded-md border border-slate-200 dark:border-[#27272a] bg-slate-50 dark:bg-[#121214] py-1 text-[10px] font-medium text-slate-600 dark:text-[#a1a1aa] disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      <ChevronDown className="w-3 h-3" />
+                      Down
+                    </button>
                   </div>
                 </div>
               </div>

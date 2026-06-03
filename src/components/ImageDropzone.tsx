@@ -120,11 +120,10 @@ export default function ImageDropzone() {
       onDragLeave={handleDragLeave}
       onPaste={handlePaste}
       tabIndex={0}
-      className={`min-h-[360px] cursor-pointer group flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-8 mb-2 focus:outline-none transition-all duration-300 relative ${
-        isDragActive
+      className={`min-h-64 sm:min-h-80 cursor-pointer group flex flex-col items-center justify-center border-2 border-dashed rounded-2xl p-5 sm:p-8 mb-2 focus:outline-none transition-all duration-300 relative ${isDragActive
           ? 'border-blue-500 bg-blue-500/10 dark:border-[#3b82f6] dark:bg-[#1e293b]/30 scale-[0.99] shadow-inner'
           : 'border-slate-300 dark:border-[#27272a] bg-slate-50/50 dark:bg-[#18181b]/20 hover:border-slate-400 dark:hover:border-[#3f3f46] hover:bg-slate-100/30 dark:hover:bg-[#18181b]/40'
-      }`}
+        }`}
     >
       <input
         ref={fileInputRef}
@@ -151,6 +150,9 @@ export default function ImageDropzone() {
         <p className="text-xs text-slate-500 dark:text-[#a1a1aa] mb-6 max-w-sm">
           Supports JPEG, PNG, WEBP, BMP, and TIFF formats. Paste images directly (Ctrl + V) from your clipboard.
         </p>
+        <p className="text-[11px] text-slate-400 dark:text-[#71717a] mb-4 sm:hidden">
+          On mobile, tap anywhere in this box to choose images.
+        </p>
 
         <button
           type="button"
@@ -158,7 +160,7 @@ export default function ImageDropzone() {
             e.stopPropagation();
             handleBrowseClick();
           }}
-          className="pointer-events-auto cursor-pointer flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-[#18181b] text-slate-700 dark:text-[#fafafa] font-medium text-xs rounded-xl shadow-sm border border-slate-200 dark:border-[#27272a] hover:bg-slate-50 dark:hover:bg-[#27272a] hover:dark:border-[#3f3f46] transition-all duration-250 active:scale-[0.98]"
+          className="pointer-events-auto w-full sm:w-auto cursor-pointer flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-[#18181b] text-slate-700 dark:text-[#fafafa] font-medium text-xs rounded-xl shadow-sm border border-slate-200 dark:border-[#27272a] hover:bg-slate-50 dark:hover:bg-[#27272a] hover:dark:border-[#3f3f46] transition-all duration-250 active:scale-[0.98]"
         >
           <FolderOpen className="w-4 h-4 text-slate-500 dark:text-[#a1a1aa]" />
           <span>Browse Files</span>
