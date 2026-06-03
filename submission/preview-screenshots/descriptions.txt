@@ -1,0 +1,7 @@
+screenshot-01-landing.png | Clean landing screen with drag and drop upload area.
+screenshot-02-grid.png | Batch image grid with reorder support.
+screenshot-03-sidebar-options.png | PDF options panel including page size and margins.
+screenshot-04-watermark.png | Watermark settings with text, opacity, and angle controls.
+screenshot-05-success-dialog.png | Conversion success dialog with output details.
+screenshot-06-themes.png | Light and dark theme interface views.
+screenshot-07-history.png | Recent conversion history panel.
